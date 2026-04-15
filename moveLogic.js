@@ -26,11 +26,31 @@ export default function move(gameState){
     // TODO: Step 1 - Prevent your Battlesnake from moving out of bounds
     // gameState.board contains an object representing the game board including its width and height
     // https://docs.battlesnake.com/api/objects/board
-    
+    if(myHead.y==0){
+        moveSafety.down=false;
+    }if(myHead.y==gameState.board.height-1){
+        moveSafety.up=false;
+    }if(myHead.x==0){
+        moveSafety.left=false;
+    }if(myHead.x==gameState.board.width-1){
+        moveSafety.right=false;
+    }
     // TODO: Step 2 - Prevent your Battlesnake from colliding with itself
     // gameState.you contains an object representing your snake, including its coordinates
     // https://docs.battlesnake.com/api/objects/battlesnake
-    
+    for(let i=0;i<gameState.board.snakes.length;i++){
+        for(let b=0;b<gameState.board.snakes[i].body.length-1;b++){
+            if(myHead.x==gameState.board.snakes[i].body[b].x+1&&myHead.y==gameState.board.snakes[i].body[b].y){
+                moveSafety.left=false;
+            }if(myHead.x==gameState.board.snakes[i].body[b].x-1&&myHead.y==gameState.board.snakes[i].body[b].y){
+                moveSafety.right=false;
+            }if(myHead.y==gameState.board.snakes[i].body[b].y+1&&myHead.x==gameState.board.snakes[i].body[b].x){
+                moveSafety.down=false;
+            }if(myHead.y==gameState.board.snakes[i].body[b].y-1&&myHead.x==gameState.board.snakes[i].body[b].x){
+                moveSafety.up=false;
+            }
+        }
+    }
     
     // TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
     // gameState.board.snakes contains an array of enemy snake objects, which includes their coordinates
