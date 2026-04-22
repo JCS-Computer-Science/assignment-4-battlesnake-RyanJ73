@@ -1,9 +1,9 @@
 export default function move(gameState){
     let moveSafety = {
-        up: 0,
-        down: 0,
-        left: 0,
-        right: 0
+        up: 50,
+        down: 50,
+        left: 50,
+        right: 50
     };
     
     // We've included code to prevent your Battlesnake from moving backwards
@@ -51,6 +51,18 @@ export default function move(gameState){
             }
         }
     }
+
+    for(let i=0;i<gameState.board.food.length;i++){
+        if(gameState.board.food[i].x==myHead.x+1&&gameState.board.food[i].y==myHead.y){
+            moveSafety.right-=10;
+        }else if(gameState.board.food[i].x==myHead.x-1&&gameState.board.food[i].y==myHead.y){
+            moveSafety.left+=(-10);
+        }else if(gameState.board.food[i].x==myHead.x&&gameState.board.food[i].y==myHead.y-1){
+            moveSafety.down-=10;
+        }else if(gameState.board.food[i].x==myHead.x&&gameState.board.food[i].y==myHead.y+1){
+            moveSafety.up-=10;
+        }
+    }
     
     // TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
     // gameState.board.snakes contains an array of enemy snake objects, which includes their coordinates
@@ -63,13 +75,13 @@ export default function move(gameState){
     //In this case we want to filter out any of these directions for which moveSafety[direction] == false
     const safeMoves = Object.keys(moveSafety).filter(direction => moveSafety[direction]<999);
     let nextMove;
-    for(let y=1;y<safeMoves.length;y++){
+    for(let i=1;i<safeMoves.length;i++){
         let swap=false;
-        for(let i=0;i<safeMoves.length-y; i++){
-            if(moveSafety[safeMoves[i]]>moveSafety[safeMoves[i+1]]){
-                let stored=moveSafety[safeMoves[i]];
-                moveSafety[safeMoves[i]]=moveSafety[safeMoves[i+1]];
-                moveSafety[safeMoves[i+1]]=stored;
+        for(let j=0;j<safeMoves.length; j++){
+            if(moveSafety[safeMoves[j]]>moveSafety[safeMoves[j+1]]){
+                let stored=safeMoves[j];
+                safeMoves[j]=safeMoves[j+1];
+                safeMoves[j+1]=stored;
                 swap=true;
             }
         }
@@ -79,10 +91,13 @@ export default function move(gameState){
     }
     if(moveSafety[safeMoves[0]]==moveSafety[safeMoves[1]]){
         nextMove = safeMoves[Math.floor(Math.random() * 2)];
+        console.log('random');
     }else if(moveSafety[safeMoves[0]]==moveSafety[safeMoves[1]]==moveSafety[safeMoves[2]]){
         nextMove = safeMoves[Math.floor(Math.random() * 3)];
+        onsole.log('random');
     }else if(moveSafety[safeMoves[0]]==moveSafety[safeMoves[1]]==moveSafety[safeMoves[2]]==moveSafety[safeMoves[3]]){
         nextMove = safeMoves[Math.floor(Math.random() * 4)];
+        onsole.log('random');
     }else{
         nextMove=safeMoves[0];
     }
@@ -94,5 +109,6 @@ export default function move(gameState){
     
     console.log(`MOVE ${gameState.turn}: ${nextMove}`)
     console.log(safeMoves);
+    console.log(moveSafety);
     return { move: nextMove };
 }
