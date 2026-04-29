@@ -34,6 +34,14 @@ export default function move(gameState){
         moveSafety.left+= 999;
     }if(myHead.x==gameState.board.width-1){
         moveSafety.right+= 999;
+    }if(myHead.y==1){
+        moveSafety.down+= 5;
+    }if(myHead.y==gameState.board.height-2){
+        moveSafety.up+= 5;
+    }if(myHead.x==1){
+        moveSafety.left+= 5;
+    }if(myHead.x==gameState.board.width-2){
+        moveSafety.right+= 5;
     }
     // TODO: Step 2 - Prevent your Battlesnake from colliding with itself
     // gameState.you contains an object representing your snake, including its coordinates
@@ -49,6 +57,63 @@ export default function move(gameState){
             }if(myHead.y==gameState.board.snakes[i].body[b].y-1&&myHead.x==gameState.board.snakes[i].body[b].x){
                 moveSafety.up+= 999;
             }
+        }
+        if(gameState.board.snakes[i].length>=gameState.you.length){
+            if(myHead.x==gameState.board.snakes[i].body[0].x+2){
+                moveSafety.left+= 300;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x+1&&myHead.y==gameState.board.snakes[i].body[0].y+1){
+                moveSafety.left+= 300;
+                moveSafety.down+= 300;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x+1&&myHead.y==gameState.board.snakes[i].body[0].y-1){
+                moveSafety.left+= 300;
+                moveSafety.up+= 300;
+            }else if(myHead.y==gameState.board.snakes[i].body[0].y+2){
+                moveSafety.down+= 300;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x-2){
+                moveSafety.right+= 300;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x-1&&myHead.y==gameState.board.snakes[i].body[0].y+1){
+                moveSafety.right+= 300;
+                moveSafety.down+= 300;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x-1&&myHead.y==gameState.board.snakes[i].body[0].y-1){
+                moveSafety.right+= 300;
+                moveSafety.up+= 300;
+            }else if(myHead.y==gameState.board.snakes[i].body[0].y-2){
+                moveSafety.up+= 300;
+            }
+        }if(gameState.board.snakes[i].length<gameState.you.length){
+            if(myHead.x==gameState.board.snakes[i].body[0].x+2){
+                moveSafety.left-= 100;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x+1&&myHead.y==gameState.board.snakes[i].body[0].y+1){
+                moveSafety.left-= 100;
+                moveSafety.down-= 100;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x+1&&myHead.y==gameState.board.snakes[i].body[0].y-1){
+                moveSafety.left-= 100;
+                moveSafety.up-= 100;
+            }else if(myHead.y==gameState.board.snakes[i].body[0].y+2){
+                moveSafety.down-= 100;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x-2){
+                moveSafety.right-= 100;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x-1&&myHead.y==gameState.board.snakes[i].body[0].y+1){
+                moveSafety.right-= 100;
+                moveSafety.down-= 100;
+            }else if(myHead.x==gameState.board.snakes[i].body[0].x-1&&myHead.y==gameState.board.snakes[i].body[0].y-1){
+                moveSafety.right-= 100;
+                moveSafety.up-= 100;
+            }else if(myHead.y==gameState.board.snakes[i].body[0].y-2){
+                moveSafety.up-= 100;
+            }
+        }
+    }
+
+    for(let i=0;i<gameState.board.hazards.length;i++){
+        if(myHead.x==gameState.board.hazards[i].x+1&&myHead.y==gameState.board.hazards[i].y){
+            moveSafety.left+= 200;
+        }if(myHead.x==gameState.board.hazards[i].x-1&&myHead.y==gameState.board.hazards[i].y){
+            moveSafety.right+= 200;
+        }if(myHead.y==gameState.board.hazards[i].y+1&&myHead.x==gameState.board.hazards[i].x){
+            moveSafety.down+= 200;
+        }if(myHead.y==gameState.board.hazards[i].y-1&&myHead.x==gameState.board.hazards[i].x){
+            moveSafety.up+= 200;
         }
     }
 
@@ -73,7 +138,7 @@ export default function move(gameState){
     //Object.keys(moveSafety) returns ["up", "down", "left", "right"]
     //.filter() filters the array based on the function provided as an argument (using arrow function syntax here)
     //In this case we want to filter out any of these directions for which moveSafety[direction] == false
-    const safeMoves = Object.keys(moveSafety).filter(direction => moveSafety[direction]<999);
+    const safeMoves = Object.keys(moveSafety).filter(direction => moveSafety[direction]);
     let nextMove;
     for(let i=1;i<safeMoves.length;i++){
         let swap=false;
