@@ -10,19 +10,6 @@ export default function move(gameState){
     const myHead = gameState.you.body[0];
     //const myNeck = gameState.you.body[1];
     
-    /*if (myNeck.x < myHead.x) {        // Neck is left of head, don't move left
-        moveSafety.left += 999;
-        
-    } else if (myNeck.x > myHead.x) { // Neck is right of head, don't move right
-        moveSafety.right += 999;
-        
-    } else if (myNeck.y < myHead.y) { // Neck is below head, don't move down
-        moveSafety.down += 999;
-        
-    } else if (myNeck.y > myHead.y) { // Neck is above head, don't move up
-        moveSafety.up += 999;
-    }*/
-    
     // TODO: Step 1 - Prevent your Battlesnake from moving out of bounds
     // gameState.board contains an object representing the game board including its width and height
     // https://docs.battlesnake.com/api/objects/board
@@ -106,9 +93,9 @@ export default function move(gameState){
     }
 
     for(let i=0;i<gameState.board.hazards.length;i++){
-        if(myHead.x==gameState.board.hazards[i].x+1&&myHead.y==gameState.board.hazards[i].y){
+        if(myHead.x-1==gameState.board.hazards[i].x&&myHead.y==gameState.board.hazards[i].y){
             moveSafety.left+= 200;
-        }if(myHead.x==gameState.board.hazards[i].x-1&&myHead.y==gameState.board.hazards[i].y){
+        }if(myHead.x+1==gameState.board.hazards[i].x&&myHead.y==gameState.board.hazards[i].y){
             moveSafety.right+= 200;
         }if(myHead.y==gameState.board.hazards[i].y+1&&myHead.x==gameState.board.hazards[i].x){
             moveSafety.down+= 200;
